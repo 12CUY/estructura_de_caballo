@@ -1,0 +1,229 @@
+:root {
+    font-size: 22vim;
+    --outlines: transparent;
+    --speed: 0.8s;
+    --delay-gap: 8;
+    --horse-width: 3.8rem;
+    --horse-heigth: 2.5em;
+    --color-horse: #f1f1f1;
+    --color-horse-back: #c2c2c2;
+    --color-hair: #d2cfd0;
+    --color-hoof: rgba(0, 0, 0, 1);
+    --color-dust: #1e1f23;
+    --color-floor: #1e1f23;
+    --color-sky: #1e1f23;
+}
+
+input[type=checkbox] {
+    opacity: 0;
+}
+
+input[type=checkbox]:checked~label {
+    --outlines: white;
+    --speed: 8s;
+    --color-horse: rgba(50, 50, 50, 0.3);
+    --color-horse-back: rgba(30, 30, 30, 0.3);
+    --color-hair: rgba(70, 70, 70, 0.3);
+    --color-hoof: rgba(0, 0, 0, 0.3);
+}
+
+* {
+    position: relative;
+}
+
+
+/*cuerpo*/
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: #1e1f23;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+label {
+    cursor: pointer;
+}
+
+
+/*yo*/
+
+.me {
+    font-size: 20px;
+    font-family: sans-serif;
+    text-decoration: none;
+    color: rgb(14, 240, 228);
+}
+
+.me:hover {
+    filter: drop-shadow(1px 1px 8px rgba(223, 0, 52));
+    padding: 5px;
+    background-color: rgba(223, 0, 52);
+    border-radius: 50%;
+}
+
+
+/*mueves*/
+
+.dust {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: calc(((100vh - var(--horse-height)) / 2) + 0.02rem);
+    overflow: hidden;
+}
+
+.floor {
+    background-color: var(--color-floor);
+    position: fixed;
+    top: calc(50vh+(var(--horse-heigth)/2)-0.5em);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
+.dust.back .particle {
+    left: calc(50vw - (var(--horse-width) / 2) + (var(--horse-width) * 0.5));
+}
+
+@for $i from 1 through 30 {
+    @keyframes particle-animation-#{$i} {
+        100% {
+            transform: translateX(calc(#{random() / 1.3} * var(--horse-width))) translateY(calc(-#{random() / 100} * (var(--horse-height) / 5))) scale(random(4) + 2) rotate(random(360) * -0.5deg);
+            opacity: 0;
+        }
+    }
+    .particle:nth-child(#{$i}) {
+        transform-origin: random(1)*-20% random(1)*-20%;
+        animation: particle-animation-#{$i} var(--speed) ease-out infinite;
+        animation-delay: calc((var(--speed) * 0.1) + #{$i * .01s});
+    }
+    .dust.back .particle:nth-child(#{$i}) {
+        animation-delay: calc((var(--speed) * 0.68) + #{$i * .01s});
+    }
+}
+
+.🐴 {
+    width: var(--horse-width);
+    height: var(--horse-height);
+    border: 0px solid var(--outlines);
+}
+
+.🐴 *,
+.🐴 *:after,
+.🐴 *:before {
+    border: 1px dashed var(--outlines);
+}
+
+.🐴>* {
+    position: absolute;
+    top: var(--part-y, 0);
+    left: var(--part-x, 0);
+    width: var(--part-width, 10px);
+    height: var(--part-height, 10px);
+    border-radius: var(--part-radius, 0);
+    transform: rotate(var(--part-rotate, 0deg));
+    transform-origin: var(--part-origin, 50% 50%);
+    animation-delay: var(--delay, 0s) !important;
+}
+
+.🐴>* *,
+.🐴>* *:after,
+.🐴>* *:before {
+    position: absolute;
+    background-color: var(--color-horse);
+    top: var(--shape-y, 0);
+    left: var(--shape-x, 0);
+    width: var(--shape-width, 10px);
+    height: var(--shape-height, 10px);
+    border-radius: var(--shape-radius, 0);
+    transform: rotate(var(--shape-rotate, 0deg));
+    transform-origin: var(--shape-origin, 50% 50%);
+    animation-delay: var(--delay, 0s) !important;
+}
+
+
+/**/
+
+.head {
+    --part-width: 20%;
+    --part-height: 15%;
+    --part-x: -1%;
+    --part-y: 3%;
+    --part-origin: 100% 50%;
+    --part-rotate: -40deg;
+    border: none;
+}
+
+.head .skull {
+    --shape-width: 55%;
+    --shape-height: 80%;
+    --shape-radius: 50%;
+    --shape-x: 43%;
+    --shape-y: 10%;
+    --shape-rotate: 40deg;
+}
+
+.head .eye {
+    background-color: #1e1f23;
+    --shape-width: 6%;
+    --shape-height: 10%;
+    --shape-radius: 30% 100%;
+    --shape-x: 45%;
+    --shape-y: 20%;
+    --shape-rotate: 0deg;
+}
+
+.head .face {
+    --shape-width: 47%;
+    --shape-height: 50%;
+    --shape-y: 8%;
+    --shape-x: 14%;
+    --shape-rotate: -5deg;
+}
+
+.head .nose {
+    --shape-x: 0%;
+    --shape-y: 11.7%;
+    --shape-width: 24%;
+    --shape-height: 35%;
+    --shape-radius: 50%;
+    --shape-rotate: -12deg;
+}
+
+.head .jaw {
+    --shape-width: 25%;
+    --shape-height: 60%;
+    --shape-x: 40%;
+    --shape-y: 37%;
+    --shape-radius: 45%;
+    transform: skew(0deg) rotate(40deg);
+}
+
+.head .lip {
+    --shape-rotate: 40deg;
+    --shape-x: -3%;
+    --shape-y: 28%;
+    --shape-radius: 30%;
+    --shape-width: 12%;
+    --shape-height: 25%;
+}
+
+.head .chin {
+    --shape-width: 15%;
+    --shape-height: 40%;
+    --shape-y: 31%;
+    --shape-x: 2%;
+    --shape-radius: 30%;
+    --shape-rotate: 40deg;
+}
